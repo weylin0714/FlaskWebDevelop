@@ -1,2 +1,51 @@
 1.2 创建虚拟环境
 ================
+
+安装 Flask 建议使用虚拟环境。为什么要使用虚拟环境？随着 Python
+项目越来越多，可能会需要不同的版本的 Python
+包，出现版本不兼容的情况。为每个项目单独创建虚拟环境，独立安装所需的
+Python 库，这样就可以隔离不同项目之间的 Python
+库，也可以隔离项目与系统预装的 Python 库。
+
+在 Python3 和 Python2 中创建虚拟环境的方式有所不同，下面分别进行介绍：
+
+1.2.1 在 Python3 中创建虚拟环境
+-------------------------------
+
+Python3 内置了用于创建虚拟环境的 venv
+模块。在CentOS7环境下，创建一个项目文件夹，然后创建一个虚拟环境。创建完成后项目文件夹中会有一个
+``venv`` 文件夹：
+
+.. code:: bash
+
+   mkdir flasky
+   cd flasky
+   python3 -m venv venv
+
+**创建虚拟环境的命令格式：**
+
+``python3 -m venv virtual-environment-name``
+
+``-m venv`` 作用：以独立的脚本运行标准库中的 venv
+包，\ ``virtual-environment-name`` 为虚拟环境名称。
+
+1.2.2 在 Python2 中创建虚拟环境
+-------------------------------
+
+Python2 没有内置的 venv 包，需要先安装第三方模块
+``virtualenv``\ ，然后再创建虚拟环境：
+
+.. code:: bash
+
+   pip install virtualenv
+   python2 -m virtualenv venv
+
+1.2.3 使用虚拟环境
+------------------
+
+在开始工作前，先要激活相应的虚拟环境：
+
+.. code:: bash
+
+   . venv/bin/activate  # 激活
+   deactivate # 退出激活环境

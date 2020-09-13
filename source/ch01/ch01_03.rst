@@ -1,2 +1,32 @@
 1.3 安装 Flask
 ==============
+
+若想在虚拟环境中安装 Flask，要先激活 venv 虚拟环境，然后用如下命令安装
+Flask：
+
+.. code:: bash
+
+   pip install flask
+
+执行上面命令，会安装 Flask 及其所需依赖。可以使用 pip freeze
+查看虚拟环境中安装了哪些包：
+
+.. code:: bash
+
+   (venv) [root@centos7 flasky]# pip freeze
+   click==7.1.2
+   Flask==1.1.2
+   itsdangerous==1.1.0
+   Jinja2==2.11.2
+   MarkupSafe==1.1.1
+   Werkzeug==1.0.1
+
+安装 Flask 后，可以验证是否正确安装：
+
+.. code:: bash
+
+   (venv) [root@centos7 flasky]# python
+   >>> import flask
+   >>> 
+
+如果没有错误提醒，则说明已经成功安装。
