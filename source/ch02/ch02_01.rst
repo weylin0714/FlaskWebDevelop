@@ -1,0 +1,148 @@
+2.1 Flask Web 应用的不同组成部分
+================================
+
+首先看一个最小的 Web 应用：
+
+.. code:: python
+
+   from flask import Flask
+   app = Flask(__name__)
+
+   @app.route('/')
+   def index():
+       return '<h1>Hello, World!</h1>'
+
+上面这个脚本定义了一个\ **应用实例**\ 、一个\ **路由**\ 和一个\ **视图函数**\ ，即是
+Flask Web 应用的各组成部分。
+
+2.1.1 应用实例
+--------------
+
+所有 Flask 应用都需创建一个\ **应用实例**\ ，是 Flask 类的对象。Web
+服务器使用 WGSI 协议，把接收自客户端的所有请求都转交给这个对象。
+
+.. code:: python
+
+   from flask import Flask
+   app = Flask(__name__)
+
+Flask
+类实例化时必须传入一个指定的参数，即应用主模块或者包的名称。大多数应用中，传入\ ``__name__``\ 作为参数。Flask
+用这个参数确定应用的位置，进而找到其他文件的位置，如图像和模板。
+
+2.1.2 路由
+----------
+
+客户端（如浏览器）将请求发送给 Web 服务器，Web 服务器再把请求发送给
+Flask 应用实例。应用实例需要知道对每个 URL
+的请求要执行哪些代码，所以保存了 URL 到 Python 函数的映射关系。处理 URL
+和函数值间关系的程序称为\ **路由**\ 。
+
+在 Flask 应用中定义路由的最简单方式是使用应用实例提供的 app.route
+装饰器，把函数绑定到 URL:
+
+.. code:: python
+
+   @app.route('/')
+   def index():
+       return '<h1>Hello, World!</h1>'
+
+装饰器将函数注册为事件处理程序，在特定事件发生时调用。上述示例把 index()
+函数注册为应用程序根地址的处理程序。
+
+在日常应用中， URL 可能包含可变的部分，路由 URL
+中放在尖括号里的内容就是动态部分，任何能匹配到静态部分的 URL
+都会映射到这个路由上。
+
+.. code:: python
+
+   @app.route('/user/<username>')
+   def index():
+       return '<h1>Hello, {}}!</h1>'.format(username)
+
+路由中的动态部分除了默认使用字符串，还支持其他类型。通过使用
+``<converter:variable_name>``
+，可以选择性的加上一个转换器，为变量\ ``variable_name``\ 指定规则。
+
+**转换器（converter）类型：**
+
+========== ===========================
+转换器类型 描述
+========== ===========================
+string     接受任何不包含斜杠的文本
+int        接受正整数
+float      接受正浮点数
+path       类似 string，但可以包含斜杠
+uuid       接受 UUID 字符串
+========== ===========================
+
+例如，路由 ``/user/<int:id>``\ 只会匹配动态片段 id 为整数的 URL。
+
+2.1.3 视图函数
+--------------
+
+处理入站请求的函数为\ **视图函数**\ 。上面示例中的 ``index()``
+函数就是一个视图函数。如果应用部署在域名为 www.example.com
+的服务器上，浏览器访问该域名后，会触发服务器执行视图函数
+``index()``\ ，函数的返回值为响应，即浏览器接收到的内容。
+
+2.1.4 url_for
+-------------
+
+``url_for()`` 函数用于构建指定函数的
+URL，将视图函数名作为第一个参数。它可以接受任意个关键字参数，每个关键字参数对应
+URL 中的变量。未知变量将添加到 URL 中作为查询参数。
+
+.. code:: python
+
+   from flask import Flask, url_for
+   app = Flask(__name__)
+
+   @app.route('/')
+   def index():
+       return '<h1>Hello, World!</h1>'
+
+   with app.test_request_context():
+       print(url_for('index', _external=True))
+
+返回一个绝对地址：http://localhost/
+
+2.1.5 Web开发服务器
+-------------------
+
+Flask 应用自带 Web 开发服务器，通过 ``flask run`` 命令启动：
+
+.. code:: sh
+
+   (venv) [root@centos7 flasky]$ export Flask_APP=hello.py
+   (venv) [root@centos7 flasky]$ flask run
+   * Serving Flask app "hello.py"
+   * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+
+Flask Web 开发服务器也可以通过编程的方式启动，调用 ``app.run()``
+方法。若要启动应用，需要执行应用的主脚本，在脚本中包含下面代码：
+
+.. code:: python
+
+   if __name__ == '__main__':
+       app.run()
+
+2.1.6 调试模式
+--------------
+
+Flask 应用可以在调试模式下运行。调试模式默认禁用，若想启用，在执行
+``flask run`` 命令前设定 ``FLASK_DEBUG=1`` 环境变量：
+
+.. code:: sh
+
+   (venv) [root@centos7 flasky]$ export Flask_APP=hello.py
+   (venv) [root@centos7 flasky]$ export FLASK_DEBUG=1
+   (venv) [root@centos7 flasky]$ flask run
+   * Serving Flask app "hello.py" (lazy loading)
+   * Debug mode: on
+   * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+   * Restarting with stat
+   * Debugger is active!
+   * Debugger PIN: 277-103-738
+
+若想以编程的方式启动调试模式，就使用 ``app.run(debug=True)``\ 。
