@@ -16,6 +16,8 @@ CSRF 攻击原理：
    发起的，所以会根据用户的 Cookie 信息处理该请求，导致来自网站 B
    的恶意代码被执行。
 
+|image1|
+
 在 Flask 中， Flask-WTF 可以保护表单免受跨站请求伪造攻击。为了实现 CSRF
 保护，Flask-WTF 需要应用程序配置一个加密密钥。Flask-WTF
 使用这个加密密钥去生成安全令牌存储在用户会话中，用于验证请求表单数据的真实性。
@@ -28,3 +30,5 @@ CSRF 攻击原理：
    app.config['SECRET_KEY'] = 'hard to guess string'
 
 app.config 字典可用来存储 Flask、扩展和程序自身的配置变量。
+
+.. |image1| image:: https://gitee.com/linwang0714/ImgHosting/raw/master/article_img//20200921.png
