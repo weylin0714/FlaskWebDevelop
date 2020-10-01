@@ -1,5 +1,5 @@
-1.2 创建虚拟环境
-================
+1.2 虚拟环境创建与 Flask 安装
+=============================
 
 安装 Flask 建议使用虚拟环境。为什么要使用虚拟环境？随着 Python
 项目越来越多，可能会需要不同的版本的 Python
@@ -7,7 +7,7 @@
 Python 库，这样就可以隔离不同项目之间的 Python
 库，也可以隔离项目与系统预装的 Python 库。
 
-在 Python3 和 Python2 中创建虚拟环境的方式有所不同，下面分别进行介绍：
+创建虚拟环境的方式有多种，下面依次进行介绍。
 
 1.2.1 在 Python3 中创建虚拟环境
 -------------------------------
@@ -40,12 +40,58 @@ Python2 没有内置的 venv 包，需要先安装第三方模块
    $ pip install virtualenv
    $ python2 -m virtualenv venv
 
-1.2.3 使用虚拟环境
-------------------
-
 在开始工作前，先要激活相应的虚拟环境：
 
 .. code:: sh
 
    $ . venv/bin/activate  # 激活
    $ deactivate # 退出激活环境
+
+激活虚拟环境后，安装 Flask：
+
+.. code:: bash
+
+   $ pip install flask
+
+执行上面命令，会安装 Flask 及其所需依赖。可以使用 pip freeze
+查看虚拟环境中安装了哪些包：
+
+.. code:: bash
+
+   (venv) [root@centos7 flasky]$ pip freeze
+   click==7.1.2
+   Flask==1.1.2
+   itsdangerous==1.1.0
+   Jinja2==2.11.2
+   MarkupSafe==1.1.1
+   Werkzeug==1.0.1
+
+1.2.3 使用官方推荐的 pipenv 创建虚拟环境
+----------------------------------------
+
+`pipenv <https://github.com/pypa/pipenv>`__
+是官方推荐的包管理工具，能够为项目创建和管理虚拟环境。
+
+**安装 pipenv：**
+
+.. code:: bash
+
+   $ pip install pipenv
+
+**在指定目录下创建虚拟环境并安装 Flask：**
+
+创建虚拟环境时使用本地默认的 python，也可使用指定 python 版本，如
+``pipenv --python 3.8``\ 。
+
+.. code:: bash
+
+   $ cd flasky
+   $ pipenv install
+   $ pipenv shell   # 进入虚拟环境
+   $ pipenv install flask   # 安装 Flask 包
+   $ pipenv uninstall flask # 卸载包
+   $ pipenv graph  # 查看依赖关系
+   $ exit  # 退出虚拟环境
+
+更多 pipenv 命令可参考 github上
+`pipenv <https://github.com/pypa/pipenv>`__ 项目。
